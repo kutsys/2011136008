@@ -27,16 +27,20 @@ void printdir(char *dir,int depth)
 	// 만약 디렉토리라면
 	if(S_ISDIR(statbuf.st_mode))
 	{
-	    // 모든 파일은 . 그리고 .. 경로를 가지고 있는데 이를 보여주지 않는다.
+	    // 모든 파일은 . 그리고 .. 경로를 가지고 있는데 이를 보여주지 않는다.		
+
 
 	    if(strcmp(".",entry->d_name) == 0 ||
 		    strcmp("..",entry->d_name) ==0) continue;
 
-	    printf("%*s%s/\n",depth,"",entry->d_name);
+
+	    if(strncmp(".",entry->d_name,1))
+		printf("%*s%s/\n",depth,"",entry->d_name);
 	    
 	    // 해당 디렉토리를 재귀적으로 진입한다.
 	    // 뎁스만큼 공백을 출력해서 디렉토리를 쉽게 구별 가능하다.
-	    printdir(entry->d_name,depth+4);
+	    if(strncmp(".",entry->d_name,1))
+		printdir(entry->d_name,depth+4);
 	} 
 	// 앞에가 .으로 시작한다면 출력하지 않는다.
 	else if(strncmp(".",entry->d_name,1))

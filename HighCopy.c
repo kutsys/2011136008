@@ -32,9 +32,9 @@ int main(char* argv[])
 	ElapsedTime = (double)(newtime - oldtime)/CLOCKS_PER_SEC;
 
 	if(ElapsedTime >= 0.5) {
-            write(1,"*",1);
 	    oldtime = clock();
-	    
+            write(1,"*",1);
+	    fflush(stdout);
 	}
 	
 

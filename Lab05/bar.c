@@ -1,0 +1,4 @@
+char* InBar()
+{
+	return "Bar";
+}

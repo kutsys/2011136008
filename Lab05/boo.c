@@ -1,0 +1,4 @@
+char* InBoo()
+{
+	return "Boo";
+}

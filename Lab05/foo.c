@@ -1,0 +1,4 @@
+char* InFoo()
+{
+	return "Foo";
+}

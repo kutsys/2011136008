@@ -192,6 +192,7 @@ int main(void)
     init_keyboard();
     signal(SIGALRM,ring);
     signal(SIGINT,ifout);
+    signal(SIGHUP,ifout);
     alarm(TIME_INTERVAL);
 
     printf(">>");

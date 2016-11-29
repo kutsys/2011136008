@@ -5,13 +5,19 @@
 
 #define TIME_INTERVAL 2
 
-void ring(int sig)
-{
-    time_t _localtime = time(NULL);
-    printf("\nlocal time of System : %d\n",(int)_localtime);
-    fflush(stdout);
-    alarm(TIME_INTERVAL);
+void ring(int sig){
+	struct tm *ctime;
+	time_t t;
+	time(&t);
+	ctime = localtime(&t);
+
+	printf("ptest : %4d-%2d-%3d, %2d:%2d:%2d\n",
+		ctime->tm_year+1900, ctime->tm_mon+1, ctime->tm_mday,
+		ctime->tm_hour, ctime->tm_min, ctime->tm_sec);
+
+	alarm(TIME_INTERVAL);
 }
+
 int main(void)
 {
     

@@ -120,9 +120,9 @@ void ring(int sig)
     int pid = get_pid_by_process_name(TARGET);
 
     if(pid == -1)
-	printf("\n[%s]\n>>","is not exist");
+	printf("[%s]\n","is not exist");
     else
-	printf("\n[%d][%s]\n>>",pid,"running");
+	printf("[%d][%s]\n",pid,"running");
 
     
     fflush(stdout);
@@ -137,31 +137,33 @@ void kill_process(const char * pname)
     if(pid != -1)
 	kill(pid,SIGKILL);
     else
-	printf("\nProcess is not exist...\n");
+	printf("\n프로세스가 존재하지 않습니다...");
 
 }
 
 void start_process(const char* pname)
 {
+    char cmd_str[1024];
     int pid = get_pid_by_process_name(pname);
     if(pid != -1)
     {
-	printf("\nProcess is Already Exist...\n");
-	return;
+		printf("\n프로세스가 이미 존재합니다...");
+		return;
     }
     else
-	system("./ptest &");
+		system("./ptest &");
 }
 void restart_process(const char* pname)
 {
     int pid = get_pid_by_process_name(pname);
     if(pid == -1)
     {
-	printf("\nnewly Starting...\n");
+	printf("\n새로 시작합니다...");
 	start_process(pname);
     }
     else
     {
+	printf("\n새로 시작합니다...");
 	kill_process(pname);
 	start_process(pname);
     }
@@ -195,7 +197,6 @@ int main(void)
     signal(SIGHUP,ifout);
     alarm(TIME_INTERVAL);
 
-    printf(">>");
     fflush(stdout);
     while(1)
     {
@@ -203,7 +204,6 @@ int main(void)
 	{
 	    menu = _getch();
 	    _putch(menu);
-	
 	switch(menu)
 	{
 	    case 'Q':
@@ -221,7 +221,7 @@ int main(void)
 	    default:
 		break;
 	}
-	printf("\n>>");
+	printf("\n");
 	fflush(stdout);
 	}
     }

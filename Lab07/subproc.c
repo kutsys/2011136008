@@ -3,6 +3,10 @@
 #include<unistd.h>
 #include<time.h>
 #include<stdlib.h>
+#include<signal.h>
+#include<sys/wait.h>
+
+int parent_pid;
 
 char* timeToString(struct tm *t) {
 	static char s[20];
@@ -12,6 +16,12 @@ char* timeToString(struct tm *t) {
 			t->tm_hour, t->tm_min, t->tm_sec);
 
 	return s;
+}
+
+void ifkill(int signo)
+{
+	kill(parent_pid,SIGALRM);
+	exit(1);
 }
 
 int test_funct()
@@ -46,16 +56,22 @@ int test_funct()
 
 int main(int argc,char* argv[])
 {
-	int parent_pid;	// pid
 	int FUNC_COUNT;  // FUNC_COUNT
-	
-	sscanf(argv[1],"%d",&parent_pid);
-	sscanf(argv[2],"%d",&FUNC_COUNT);
 
+	(void)signal(SIGTERM,ifkill);
+	sscanf(argv[1],"%d",&parent_pid);
+	printf("PID OF PARENT : %d \n",parent_pid);
+	sscanf(argv[2],"%d",&FUNC_COUNT);
+	
 	while(1)
 	{
 		if(test_funct() >= FUNC_COUNT)
+		{
+			printf("END OF THE FUNC\n");
+			if(kill(parent_pid,SIGALRM) == -1)
+				printf("Error Send Signal\n");
 			exit(1);
+		}
 	}
 	
 

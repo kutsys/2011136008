@@ -25,6 +25,7 @@ void main()
     key_t key;
     message_buf rbuf;
     message_buf sbuf;
+    int msgflg = IPC_CREAT | 0666;
     size_t buf_length;
     char buffer[MSGSZ];
     char* studentID = "2011136008";
@@ -40,7 +41,7 @@ void main()
     sprintf(buffer,"%d,%s",(int)getpid(),studentID);
 
 
-    if ((msqid = msgget(key, 0666)) < 0) {
+    if ((msqid = msgget(key, msgflg )) < 0) {
         perror("msgget");
         exit(1);
     }
@@ -77,7 +78,7 @@ void main()
 		token = strtok(NULL,","); 
 		index++;
 	}
-	printf("Student Number : %s , Name : %s , produce PID : %d, consume PID %s\n ",studentID, recv_data[1], getpid(), recv_data[0]);
+	printf("Student Number : %s\nName : %s\nproduce PID : %d\nconsume : PID %s\n ",studentID, recv_data[1], getpid(), recv_data[0]);
 
     exit(0);
 }

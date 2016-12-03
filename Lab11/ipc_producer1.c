@@ -53,7 +53,7 @@ int main()
 		index++;
 	}
 	
-	printf("Student Number : %s , Name : %s , produce PID : %d, consume PID %s\n ",studentID, recv_data[1], getpid(), recv_data[0]);
+	printf("Student Number : %s\nName : %s\nproduce PID : %d\nconsume PID : %s\n",studentID, recv_data[1], getpid(), recv_data[0]);
 
 
 	shmdt(shared_memory);

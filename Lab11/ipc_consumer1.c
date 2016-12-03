@@ -8,6 +8,7 @@
 #include <unistd.h>
 
 #define SZ_MSG 1024
+#define CMD_LENGTH 512
 
 struct shared_use_st {
 
@@ -16,6 +17,25 @@ struct shared_use_st {
 
 };
 
+int get_pid_by_process_name(const char *pname)
+{
+    int pid = -1; 
+    char cmd_string[CMD_LENGTH];
+    FILE *fp;
+
+    sprintf(cmd_string, "pgrep %s", pname);
+
+    fp = popen(cmd_string, "r");
+    fseek(fp, 0, SEEK_SET);
+    fscanf(fp, "%d", &pid);
+
+    fclose(fp);
+
+    if (pid < 1)
+	pid = -1;
+
+    return pid;
+}
 
 int main()
 {
@@ -25,6 +45,12 @@ int main()
 	char buffer[BUFSIZ];
 	int shmid;
 	char* studentName = "김경환";
+
+	if(get_pid_by_process_name("pro") == -1){
+	    printf("producer를 먼저 실행해야 합니다\n");
+	    exit(1);
+    	}
+
 
 	// prepare send message
 	sprintf(buffer,"%d,%s",getpid(),studentName);

@@ -102,7 +102,7 @@ int main()
 
 	recvData(pipe_fd , recv_pid , recv_message);
 
-	printf("Student Number : %s , Name : %s , produce PID : %d, consume PID %s\n ",studentNum, recv_message, getpid(), recv_pid);
+	printf("Student Number : %s\nName : %s\nproduce PID : %d\nconsume PID %s\n",studentNum, recv_message, getpid(), recv_pid);
 
 	printf("BYE!\n");
 }

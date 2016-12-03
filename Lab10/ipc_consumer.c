@@ -10,6 +10,27 @@
 #define FIFO_NAME "/tmp/my_fifo"
 #define BUFFER_SIZE PIPE_BUF
 #define TEN_MEG ( 1024*1024*10 )
+#define CMD_LENGTH 512
+
+int get_pid_by_process_name(const char *pname)
+{
+    int pid = -1; 
+    char cmd_string[CMD_LENGTH];
+    FILE *fp;
+
+    sprintf(cmd_string, "pgrep %s", pname);
+
+    fp = popen(cmd_string, "r");
+    fseek(fp, 0, SEEK_SET);
+    fscanf(fp, "%d", &pid);
+
+    fclose(fp);
+
+    if (pid < 1)
+	pid = -1;
+
+    return pid;
+}
 
 void SendData(int _pipe_fd , int _pid , char _message[1024])
 {
@@ -82,6 +103,11 @@ int main()
 	char send_buf[BUFFER_SIZE + 1];
 	char recv_pid[1024];
 	char recv_message[1024];
+
+	if(get_pid_by_process_name("pro") == -1){
+	    printf("producer를 먼저 실행해야 합니다\n");
+	    exit(1);
+        }
 
 	pipe_fd = open(FIFO_NAME,O_RDONLY);
 

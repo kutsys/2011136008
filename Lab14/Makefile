@@ -1,6 +1,5 @@
-Hello : 
+compile : 
 	gcc -o Hello Hello.c
-elfreader :
 	gcc -o elfreader elfreader.c
 
 clean :

@@ -1,6 +1,5 @@
-pro : 
+Compile : 
 	gcc -o pro ipc_producer1.c
-con :
 	gcc -o con ipc_consumer1.c
 
 clean :

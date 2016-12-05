@@ -71,10 +71,10 @@ int main()
 	shared_memory = shmat(shmid,(void*)0,0);
 	shared_stuff = (struct shared_use_st *)shared_memory;
 
-	printf("Produce PID, StudentID : %s\n",shared_stuff->message);
-	v(semid);	
+	printf("Produce PID, StudentID : %s\n",shared_stuff->message);	
 
 	strcpy(shared_stuff->message,buffer);	
+	v(semid);
 
 	shmdt(shared_memory);
 	exit(EXIT_SUCCESS);

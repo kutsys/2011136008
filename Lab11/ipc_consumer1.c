@@ -3,12 +3,16 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/ipc.h>
-#include <sys/shm.h>
+#include <sys/sem.h>
 #include <signal.h>
 #include <unistd.h>
+#include <sys/shm.h>
+#include <errno.h>
+#include "se_mun.h"
 
 #define SZ_MSG 1024
 #define CMD_LENGTH 512
+#define SEMKEY 0x100
 
 struct shared_use_st {
 
@@ -16,6 +20,9 @@ struct shared_use_st {
     char message[SZ_MSG];
 
 };
+int p(int semid);
+int v(int semid);
+int initsem(int semkey);
 
 int get_pid_by_process_name(const char *pname)
 {
@@ -44,12 +51,14 @@ int main()
 	struct shared_use_st * shared_stuff;
 	char buffer[BUFSIZ];
 	int shmid;
+        int semid, pid = getpid();
 	char* studentName = "김경환";
 
 	if(get_pid_by_process_name("pro") == -1){
 	    printf("producer를 먼저 실행해야 합니다\n");
 	    exit(1);
     	}
+        if((semid = initsem(SEMKEY)) == -1) exit(1);
 
 
 	// prepare send message
@@ -63,8 +72,9 @@ int main()
 	shared_stuff = (struct shared_use_st *)shared_memory;
 
 	printf("Produce PID, StudentID : %s\n",shared_stuff->message);
+	v(semid);	
+
 	strcpy(shared_stuff->message,buffer);	
-	shared_stuff->mode = 0;
 
 	shmdt(shared_memory);
 	exit(EXIT_SUCCESS);
